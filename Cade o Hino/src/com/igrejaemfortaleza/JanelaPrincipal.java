@@ -4,7 +4,9 @@ import java.awt.Color;
 import java.awt.FlowLayout;
 import java.awt.event.KeyEvent;
 
+import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
+import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -13,10 +15,9 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JTextField;
+import javax.swing.JRadioButton;
 
 import utils.HintTextField;
-import utils.PreferenciasException;
 
 
 /**
@@ -35,8 +36,12 @@ public class JanelaPrincipal extends JFrame {
 	
 	
 	private JPanel pnPrincipal;
-	public JTextField tfBusca;
+	public HintTextField tfBusca;
 	public JButton btBuscar;
+	public ButtonGroup rbTipoBusca;
+	public JRadioButton rbTipoBuscaCod;
+	public JRadioButton rbTipoBuscaNome;
+	public JRadioButton rbTipoBuscaTexto;
 	
 	public static JLabel lbDirBusca;
 	
@@ -47,7 +52,7 @@ public class JanelaPrincipal extends JFrame {
 		controladorTela = ControladorTela.getInstance();
 		
 		setTitle("Cadê o Hino?");
-		setBounds(250, 200, 500,125);
+		setBounds(250, 200, 550, 200);
 		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 		
 		preparaMenu();
@@ -81,13 +86,33 @@ public class JanelaPrincipal extends JFrame {
 	
 	private void preparaPainelPrincipal() {
 		tfBusca = new HintTextField("Ex: S100");
-		tfBusca.setColumns(10);
+		tfBusca.setColumns(20);
 		tfBusca.addKeyListener(controladorTela);
 		btBuscar = new JButton("Buscar");
 		btBuscar.addActionListener(controladorTela);
+		rbTipoBusca = new ButtonGroup();
+		rbTipoBuscaCod = new JRadioButton("Código", true);
+		rbTipoBuscaNome = new JRadioButton("Nome");
+		rbTipoBuscaTexto = new JRadioButton("Texto");
+		
+		rbTipoBusca.add(rbTipoBuscaCod);
+		rbTipoBusca.add(rbTipoBuscaNome);
+		rbTipoBusca.add(rbTipoBuscaTexto);
+		
+		rbTipoBuscaCod.addActionListener(controladorTela);
+		rbTipoBuscaNome.addActionListener(controladorTela);
+		rbTipoBuscaTexto.addActionListener(controladorTela);
+		
+		JPanel pnTipo = new JPanel(new FlowLayout(FlowLayout.CENTER));
+		pnTipo.setBorder(BorderFactory.createTitledBorder("Buscar por:"));
+		
+		pnTipo.add(rbTipoBuscaCod);
+		pnTipo.add(rbTipoBuscaNome);
+		pnTipo.add(rbTipoBuscaTexto);
 		
 		pnPrincipal = new JPanel(new FlowLayout(FlowLayout.CENTER, 5, 3));
-		
+
+		pnPrincipal.add(pnTipo);
 		pnPrincipal.add(new JLabel("Buscar:"));
 		pnPrincipal.add(tfBusca);
 		pnPrincipal.add(btBuscar);
@@ -115,11 +140,7 @@ public class JanelaPrincipal extends JFrame {
 	
 	@Override
 	public void dispose() {
-		try {
-			controladorTela.deploy();
-		} catch (PreferenciasException e) {
-			JOptionPane.showMessageDialog(null, e.getMessage(), "Jesus é o Senhor!", JOptionPane.INFORMATION_MESSAGE);
-		}
+		JOptionPane.showMessageDialog(null, "Jesus é o Senhor!", "", JOptionPane.INFORMATION_MESSAGE);
 		super.dispose();
 	}
 }

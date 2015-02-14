@@ -3,6 +3,7 @@ import java.awt.Desktop;
 import java.io.File;
 import java.io.FilenameFilter;
 import java.io.IOException;
+import java.text.Normalizer;
 
 import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileFilter;
@@ -34,7 +35,7 @@ public class Controlador {
 	}
 	
 	/**
-	 * Mostra ao usuário uma janela para escolhe de um diretório ou um arquivo
+	 * Mostra ao usuário uma janela para escolha de um diretório ou um arquivo
 	 * 
 	 * @param selectionMode @see SELECT_FILE e SELECT_DIRECTORY
 	 * @return path selecionado pelo usuário
@@ -107,11 +108,11 @@ public class Controlador {
 	/**
 	 * Busca o arquivo pelo nome na pasta setada nas preferências
 	 * 
-	 * @param filtro parâmetro de busca pelo nome do arquivo
+	 * @param filtro parâmetro de busca pelo código do arquivo
 	 * @return
 	 * @throws PreferenciasException
 	 */
-	public boolean buscarSlide(String filtro) throws PreferenciasException {
+	public boolean buscarSlidePorCodigo(String filtro) throws PreferenciasException {
 	
 		/* verificação se está no formato X-000 */
 		String regex = "[a-zA-Z]{1}[0-9]+";
@@ -130,11 +131,6 @@ public class Controlador {
 		System.out.println("filtro: " + filtro);
 		
 		File dir = getDiretorioEspecifico(filtro, preferencias.getDiretorioBusca());
-		
-		if(dir == null) {
-			throw new IllegalArgumentException("Não achei a pasta do seu hino! Você pediu pra eu buscar no lugar certo?");
-		}
-		
 		File arquivos[] = dir.listFiles(new FilenameFilter() {
 			
 			@Override
@@ -155,6 +151,68 @@ public class Controlador {
 			}
 		}
 		return false;
+	}
+	
+	public boolean buscarSlidePorNome(String filtro) throws PreferenciasException {
+		
+		filtro = formataTexto(filtro);
+		
+		File dirBusca = preferencias.getDiretorioBusca();
+		File pastas[] = dirBusca.listFiles();
+		
+		for (File pasta : pastas) {
+			
+			System.out.println("Buscando em: "+ pasta.getName());
+			if(pasta.isDirectory()) {
+				File files[] = pasta.listFiles(new FilenameFilter() {
+					
+					@Override
+					public boolean accept(File dir, String name) {
+						return name.contains("-")
+								&& (name.contains(".ppt") || name.contains(".pptx") );
+					}
+				});
+				
+				for (File file : files) {
+					String nomeArquivo = file.getAbsolutePath();
+					nomeArquivo = (nomeArquivo.split("-")[1]).trim();
+					
+					nomeArquivo = formataTexto(nomeArquivo);
+					
+					System.out.println("-- comparando: "+ nomeArquivo);
+					if(nomeArquivo.contains(filtro)) {
+						abrirArquivo(file);
+						return true;
+					}
+				}
+			}
+		}
+		
+		return false;
+	}
+
+	public boolean buscarSlidePorTexto(String filtro) {
+		//TODO: buscar slide por textos dentro das letras
+		
+		filtro = formataTexto(filtro);
+		
+		return false;
+	}
+
+	/**
+	 * @param filtro
+	 * @return parametro fomatado sem caracteres especiais e em caixa alta
+	 */
+	private String formataTexto(String filtro) {
+		
+		System.out.print("formatado de \'"+ filtro + "\'");
+		filtro = Normalizer.normalize(filtro, Normalizer.Form.NFD);
+		filtro = filtro.replaceAll("[^\\p{ASCII}]", "");
+		filtro = filtro.toUpperCase().trim();
+		
+		System.out.println("para: \'" + filtro +"\'");
+
+		return filtro;
 	}
 
 	private File getDiretorioEspecifico(String filtro, File diretorioBusca) {
@@ -200,10 +258,6 @@ public class Controlador {
 			throw new IllegalArgumentException("Não foi possível abrir o arquivo.");
 		}
 	}
-
-	public void deploy() throws PreferenciasException {
-		preferencias.deploy();
-	}
 	
 	/**
 	 * Enum usado para converter a string que representa o hino para o código que representa a pasta
@@ -235,4 +289,5 @@ public class Controlador {
 			return null;
 		}
 	}
+
 }

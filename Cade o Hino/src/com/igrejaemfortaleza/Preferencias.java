@@ -1,8 +1,5 @@
 package com.igrejaemfortaleza;
 import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.ObjectOutputStream;
 
 import utils.PreferenciasException;
 
@@ -19,10 +16,8 @@ public class Preferencias {
 	
 	private File diretorioBusca;
 	private File diretorioBase;
-	private File diretorioHinos;
-	private File prefs;
 	
-	private Preferencias() throws PreferenciasException {
+	private Preferencias() {
 		String userHome = System.getProperty("user.home");
 		String nomePasta = "Cade o Hino";
 		String path = userHome + File.separator + "Documents" +  File.separator + nomePasta;
@@ -32,42 +27,19 @@ public class Preferencias {
 			diretorioBase.mkdir();
 		}
 
-		diretorioHinos = new File(diretorioBase, "Hinos");
-		if(!diretorioHinos.exists()) {
-			diretorioHinos.mkdir();
+		diretorioBusca = new File(diretorioBase, "Hinos");
+		if(!diretorioBusca.exists()) {
+			diretorioBusca.mkdir();
 		}
-		
-		prefs = new File(diretorioBase, "Preferencias.dat");
-		diretorioBusca = diretorioHinos;
 		
 		String result = criarEstruturaSubPastas(diretorioBusca);
 		
 		if(!"Estas pastas já existem:\n".equals(result)) {
 			System.out.println(result);
 		}
-		
-		// se o arquivo poder ser usado, tentamos ler qual o último diretório de busca usado
-//		if (prefs.exists() && prefs.length() > 0) {
-//			try {
-//				ObjectInputStream ois = new ObjectInputStream(new FileInputStream(prefs));
-//				
-//				File readObject = (File) ois.readObject();
-//				
-//				diretorioBusca = readObject;
-//				ois.close();
-//			} catch (IOException | ClassNotFoundException e) {
-//				throw new PreferenciasException("Não consegui lê onde era a diretório para eu buscar os hinos.\nPor favor, informe de novo em Arquivo>Preferências");
-//			}
-//		} else {	// senão, criamos o arquivo
-//			try {
-//				prefs.createNewFile();
-//			} catch (IOException e) {
-//				throw new PreferenciasException("Não consegui criar minha pasta para guardar minhas coisas.\nTentei criar aqui: "+ prefs.getAbsolutePath());
-//			}
-//		}
 	}
 	
-	public static Preferencias getInstance() throws PreferenciasException {
+	public static Preferencias getInstance() {
 		if(instance == null) {
 			instance = new Preferencias();
 		}
@@ -101,7 +73,7 @@ public class Preferencias {
 		}
 		
 		if(!diretorioBusca.exists() || !diretorioBusca.isDirectory() || diretorioBusca.isHidden()) {
-			throw new PreferenciasException("Eu não consigo acessar o diretório que você me disse pra procurar! :(");
+			throw new PreferenciasException("Eu não consigo acessar o diretório! :(");
 		}
 		return diretorioBusca;
 	}
@@ -112,22 +84,5 @@ public class Preferencias {
 	
 	public void setDiretorioBusca(File diretorio) {
 		this.diretorioBusca = diretorio;
-	}
-	
-	/**
-	 * Salva o último diretório de busca usado
-	 * 
-	 * @throws PreferenciasException
-	 */
-	public void deploy() throws PreferenciasException {
-		ObjectOutputStream oos;
-		try {
-			oos = new ObjectOutputStream(new FileOutputStream(prefs));
-			oos.writeObject(diretorioBusca);
-			oos.close();
-		} catch (IOException e) {
-			throw new PreferenciasException("Não consegui salvar minhas coisas.\nDepois você vai ter que dizer onde ficam os hinos de novo, Ok?");
-		}
-		
 	}
 }
