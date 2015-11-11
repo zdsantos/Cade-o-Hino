@@ -1,4 +1,4 @@
-package com.igrejaemfortaleza;
+package com.igrejaemfortaleza.ctrl;
 import java.awt.Desktop;
 import java.io.File;
 import java.io.FilenameFilter;
@@ -7,10 +7,12 @@ import java.io.IOException;
 import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileFilter;
 
+import com.igrejaemfortaleza.Preferencias;
+
 import utils.PreferenciasException;
 
 /**
- * Classe que guarda as "regras de negócio" para busca de arquivos e atualização do diretório de busca 
+ * Classe que guarda as "regras de negï¿½cio" para busca de arquivos e atualizaï¿½ï¿½o do diretï¿½rio de busca 
  * 
  * @author Zedequias Santos
  */
@@ -34,10 +36,10 @@ public class Controlador {
 	}
 	
 	/**
-	 * Mostra ao usuário uma janela para escolhe de um diretório ou um arquivo
+	 * Mostra ao usuï¿½rio uma janela para escolhe de um diretï¿½rio ou um arquivo
 	 * 
 	 * @param selectionMode @see SELECT_FILE e SELECT_DIRECTORY
-	 * @return path selecionado pelo usuário
+	 * @return path selecionado pelo usuï¿½rio
 	 * @throws PreferenciasException
 	 */
 	private static String escolherDiretorio(final int selectionMode) {
@@ -105,21 +107,21 @@ public class Controlador {
 	}
 
 	/**
-	 * Busca o arquivo pelo nome na pasta setada nas preferências
+	 * Busca o arquivo pelo nome na pasta setada nas preferï¿½ncias
 	 * 
-	 * @param filtro parâmetro de busca pelo nome do arquivo
+	 * @param filtro parï¿½metro de busca pelo nome do arquivo
 	 * @return
 	 * @throws PreferenciasException
 	 */
 	public boolean buscarSlide(String filtro) throws PreferenciasException {
 	
-		/* verificação se está no formato X-000 */
+		/* verificaï¿½ï¿½o se estï¿½ no formato X-000 */
 		String regex = "[a-zA-Z]{1}[0-9]+";
 		if(!filtro.matches(regex)) {
-			throw new IllegalArgumentException("Busque usando como padrão <tipo><num>\n ex: S100");
+			throw new IllegalArgumentException("Busque usando como padrï¿½o <tipo><num>\n ex: S100");
 		}
 		
-		/* tratamento para entrada com letra minúscula */
+		/* tratamento para entrada com letra minï¿½scula */
 		filtro = filtro.substring(0, 1).toUpperCase() + filtro.substring(1);
 		filtro = filtro.trim();
 		
@@ -132,7 +134,7 @@ public class Controlador {
 		File dir = getDiretorioEspecifico(filtro, preferencias.getDiretorioBusca());
 		
 		if(dir == null) {
-			throw new IllegalArgumentException("Não achei a pasta do seu hino! Você pediu pra eu buscar no lugar certo?");
+			throw new IllegalArgumentException("Nï¿½o achei a pasta do seu hino! Vocï¿½ pediu pra eu buscar no lugar certo?");
 		}
 		
 		File arquivos[] = dir.listFiles(new FilenameFilter() {
@@ -160,7 +162,7 @@ public class Controlador {
 	private File getDiretorioEspecifico(String filtro, File diretorioBusca) {
 		String tipo = filtro.substring(0, 1);
 		
-		// lista todas as subpastas do diretório de buscar que estão no padrão <num> - <nome>. ex: 01 - HINOS
+		// lista todas as subpastas do diretï¿½rio de buscar que estï¿½o no padrï¿½o <num> - <nome>. ex: 01 - HINOS
 		File pastas[] = diretorioBusca.listFiles(new FilenameFilter() {
 			
 			@Override
@@ -197,7 +199,7 @@ public class Controlador {
 		try {
 			Desktop.getDesktop().open(f);
 		} catch (IOException e) {
-			throw new IllegalArgumentException("Não foi possível abrir o arquivo.");
+			throw new IllegalArgumentException("Nï¿½o foi possï¿½vel abrir o arquivo.");
 		}
 	}
 
@@ -206,7 +208,7 @@ public class Controlador {
 	}
 	
 	/**
-	 * Enum usado para converter a string que representa o hino para o código que representa a pasta
+	 * Enum usado para converter a string que representa o hino para o cï¿½digo que representa a pasta
 	 * 
 	 * @author Zedequias
 	 */

@@ -1,4 +1,4 @@
-package com.igrejaemfortaleza;
+package com.igrejaemfortaleza.view;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -8,6 +8,8 @@ import java.awt.event.KeyListener;
 import javax.swing.JOptionPane;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
+
+import com.igrejaemfortaleza.ctrl.Controlador;
 
 import utils.PreferenciasException;
 
@@ -37,27 +39,27 @@ public class ControladorTela implements ActionListener, KeyListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		
-		if(e.getSource() == tela.btBuscar) {					// AÇÃO BUSCAR
+		if(e.getSource() == tela.btBuscar) {					// Aï¿½ï¿½O BUSCAR
 			String filtro = tela.tfBusca.getText();
 			
 			try {
 				
 				if(!controlador.buscarSlide(filtro)) {
-					JOptionPane.showMessageDialog(null, "Hino não encontrado.", "Arquivo não encontrado", JOptionPane.ERROR_MESSAGE);
+					JOptionPane.showMessageDialog(null, "Hino nï¿½o encontrado.", "Arquivo nï¿½o encontrado", JOptionPane.ERROR_MESSAGE);
 				}
 			} catch (IllegalArgumentException exc) {
-				JOptionPane.showMessageDialog(null, exc.getMessage(), "Formato inválido", JOptionPane.ERROR_MESSAGE);
+				JOptionPane.showMessageDialog(null, exc.getMessage(), "Formato invï¿½lido", JOptionPane.ERROR_MESSAGE);
 			} catch (PreferenciasException exc) {
 				JOptionPane.showMessageDialog(null, exc.getMessage(), "Erro ao buscar!", JOptionPane.ERROR_MESSAGE);
 			}
 			
-		} else if(e.getSource() == tela.miAbir) {	// AÇÃO ABRIR
+		} else if(e.getSource() == tela.miAbir) {	// Aï¿½ï¿½O ABRIR
 			controlador.abrirArquivo();
 			exibeDirBusca();
-		} else if(e.getSource() == tela.miSair) {			// AÇÃO SAIR
+		} else if(e.getSource() == tela.miSair) {			// Aï¿½ï¿½O SAIR
 			tela.dispose();
-		} else if(e.getSource() == tela.miSobre) {			// AÇÃO SOBRE
-			// TODO: criar janela "Sobre" que irá tem um manual e informações do sistema
+		} else if(e.getSource() == tela.miSobre) {			// Aï¿½ï¿½O SOBRE
+			// TODO: criar janela "Sobre" que irï¿½ tem um manual e informaï¿½ï¿½es do sistema
 			System.out.println("Sobre");
 		}
 		

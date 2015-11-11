@@ -1,5 +1,8 @@
 package com.igrejaemfortaleza;
 
+import com.igrejaemfortaleza.view.ControladorTela;
+import com.igrejaemfortaleza.view.JanelaPrincipal;
+
 public class Main {
 
 	public static void main(String[] args) {

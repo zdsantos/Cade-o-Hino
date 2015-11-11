@@ -1,4 +1,4 @@
-package com.igrejaemfortaleza;
+package com.igrejaemfortaleza.view;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.FlowLayout;
@@ -46,7 +46,7 @@ public class JanelaPrincipal extends JFrame {
 		
 		controladorTela = ControladorTela.getInstance();
 		
-		setTitle("Cadê o Hino?");
+		setTitle("Cadï¿½ o Hino?");
 		setBounds(250, 200, 500,125);
 		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 		
@@ -71,7 +71,7 @@ public class JanelaPrincipal extends JFrame {
 		lbDirBusca = new JLabel();
 		lbDirBusca.setForeground(Color.GRAY);
 		
-		JLabel lbAux = new JLabel("Diretório de busca:");
+		JLabel lbAux = new JLabel("Diretï¿½rio de busca:");
 		lbAux.setForeground(Color.GRAY);
 		
 		controladorTela.exibeDirBusca();
@@ -118,7 +118,7 @@ public class JanelaPrincipal extends JFrame {
 		try {
 			controladorTela.deploy();
 		} catch (PreferenciasException e) {
-			JOptionPane.showMessageDialog(null, e.getMessage(), "Jesus é o Senhor!", JOptionPane.INFORMATION_MESSAGE);
+			JOptionPane.showMessageDialog(null, e.getMessage(), "Jesus ï¿½ o Senhor!", JOptionPane.INFORMATION_MESSAGE);
 		}
 		super.dispose();
 	}
